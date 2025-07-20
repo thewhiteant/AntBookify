@@ -1,10 +1,64 @@
 {% extends "base.html" %}
 {% block content %}
-<h1 class="text-xl font-bold mb-4">✏️ Edit Note</h1>
-<form method="POST" class="bg-white p-6 rounded shadow space-y-4">
-  <input name="title" value="{{ note.title }}" placeholder="Note Title" required class="w-full p-2 border rounded" />
-  <textarea name="content" placeholder="Note Content" required class="w-full p-2 border rounded h-40">{{ note.content }}</textarea>
-  <button class="bg-yellow-500 text-white px-4 py-2 rounded">Update Note</button>
+<h1 class="text-2xl font-bold text-gray-800 mb-6">✏️ Edit Note</h1>
+
+<form method="POST" onsubmit="syncContent()" class="bg-white p-6 rounded-lg shadow space-y-4">
+  <input 
+    name="title" 
+    value="{{ note.title }}" 
+    placeholder="Note Title" 
+    required 
+    class="w-full p-3 border border-gray-300 rounded text-lg font-semibold"
+  />
+
+  <div class="space-y-2">
+    <div class="flex flex-wrap gap-2 text-sm font-medium">
+      <button type="button" onclick="format('bold')" class="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300">B</button>
+      <button type="button" onclick="format('italic')" class="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300">I</button>
+      <button type="button" onclick="format('underline')" class="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300">U</button>
+      <button type="button" onclick="format('insertUnorderedList')" class="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300">• List</button>
+      <button type="button" onclick="format('insertOrderedList')" class="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300">1. List</button>
+      <button type="button" onclick="format('formatBlock','<h2>')" class="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300">H2</button>
+      <button type="button" onclick="format('formatBlock','<blockquote>')" class="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300">Quote</button>
+      <button type="button" onclick="clearFormat()" class="bg-red-100 text-red-700 px-3 py-1 rounded hover:bg-red-200">Clear</button>
+    </div>
+
+    <div 
+      id="editor" 
+      contenteditable="true" 
+      class="w-full h-60 p-4 border border-gray-300 rounded text-gray-800 bg-gray-50 whitespace-pre-wrap overflow-y-auto"
+    >{{ note.content|safe }}</div>
+
+    <textarea id="hiddenContent" name="content" hidden required></textarea>
+  </div>
+
+  <button 
+    type="submit"
+    class="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-6 py-2 rounded"
+  >
+    ✅ Update Note
+  </button>
 </form>
-<a href="{{ url_for('notes', chapter_id=note.chapter_id) }}" class="mt-4 inline-block text-blue-600 underline">← Back to Notes</a>
+
+<a href="{{ url_for('notes', chapter_id=note.chapter_id) }}" class="mt-6 inline-block text-blue-600 hover:underline text-sm">← Back to Notes</a>
+
+<script>
+  const editor = document.getElementById("editor");
+  const hiddenField = document.getElementById("hiddenContent");
+
+  function syncContent() {
+    hiddenField.value = editor.innerHTML;
+  }
+
+  function format(command, value = null) {
+    document.execCommand(command, false, value);
+  }
+
+  function clearFormat() {
+    editor.innerHTML = editor.innerText;
+  }
+
+  // Sync on load just in case
+  window.addEventListener('DOMContentLoaded', syncContent);
+</script>
 {% endblock %}

@@ -6,7 +6,7 @@
   {% for book in books %}
   <div class="bg-white p-4 rounded shadow hover:bg-blue-50 relative">
     <a href="{{ url_for('chapters', book_id=book.id) }}">
-      <img src="{{ book.thumbnail }}" class="w-full h-40 object-cover rounded mb-2" alt="{{ book.title }}">
+      <img src="{{ book.thumbnail }}" class="w-full h-100 object-cover rounded mb-2" alt="{{ book.title }}">
       <h2 class="text-xl font-semibold">{{ book.title }}</h2>
     </a>
     <div class="flex space-x-2 mt-2">
