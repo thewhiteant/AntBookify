@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="text-xl font-bold mb-4">📝 Add Note to "{{ chapter.title }}"</h1>
+<form method="POST" class="bg-white p-6 rounded shadow space-y-4">
+  <input name="title" placeholder="Note Title" required class="w-full p-2 border rounded" />
+  <textarea name="content" placeholder="Note Content" required class="w-full p-2 border rounded h-40"></textarea>
+  <button class="bg-purple-600 text-white px-4 py-2 rounded">Add Note</button>
+</form>
+<a href="{{ url_for('notes', chapter_id=chapter.id) }}" class="mt-4 inline-block text-blue-600 underline">← Back to Notes</a>
+{% endblock %}

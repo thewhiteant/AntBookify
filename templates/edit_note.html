@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="text-xl font-bold mb-4">✏️ Edit Note</h1>
+<form method="POST" class="bg-white p-6 rounded shadow space-y-4">
+  <input name="title" value="{{ note.title }}" placeholder="Note Title" required class="w-full p-2 border rounded" />
+  <textarea name="content" placeholder="Note Content" required class="w-full p-2 border rounded h-40">{{ note.content }}</textarea>
+  <button class="bg-yellow-500 text-white px-4 py-2 rounded">Update Note</button>
+</form>
+<a href="{{ url_for('notes', chapter_id=note.chapter_id) }}" class="mt-4 inline-block text-blue-600 underline">← Back to Notes</a>
+{% endblock %}
